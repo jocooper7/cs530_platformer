@@ -4,6 +4,8 @@ from constants import (
     SCREEN_HEIGHT,
     GROUND_HEIGHT,
     PLATFORM_COLOR,
+    WALL_WIDTH,
+    WALL_COLOR,
     HAZARD_COLOR,
     HAZARD_SIZE,
     HAZARD_SPEED,
@@ -106,6 +108,13 @@ def load_level_1():
     # Ground
     ground = Platform(0, SCREEN_HEIGHT - GROUND_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT)
     platforms.add(ground)
+
+    # Boundary walls to keep the player from leaving the level.
+    wall_left = Platform(0, 0, WALL_WIDTH, SCREEN_HEIGHT, color=WALL_COLOR)
+    wall_right = Platform(
+        SCREEN_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, SCREEN_HEIGHT, color=WALL_COLOR
+    )
+    platforms.add(wall_left, wall_right)
 
     # Floating platforms
     platform_a = Platform(150, 450, 120, 20)
