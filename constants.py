@@ -59,8 +59,26 @@ HAZARD_SIZE = 24
 HAZARD_SPEED = 2
 
 # ---------------------------
+# Goal / Crown settings
+# ---------------------------
+CROWN_SIZE = 20
+CROWN_COLOR = YELLOW
+
+# ---------------------------
+# Level / scoring settings
+# ---------------------------
+LEVEL_TIME_LIMIT_SECONDS = 30
+INTRO_MESSAGE_DURATION_MS = 2500
+INTRO_MESSAGE_TEXT = "Reach the Gold Crown"
+GOOD_JOB_TEXT = "Good Job!"
+TIME_UP_TEXT = "Time's Up!"
+RETRY_PROMPT_TEXT = "Press R to Retry"
+EXIT_PROMPT_TEXT = "Press ESC to Exit"
+
+# ---------------------------
 # UI settings
 # ---------------------------
 UI_FONT_SIZE = 28
+UI_BIG_FONT_SIZE = 48
 UI_MARGIN = 10
 UI_TEXT_COLOR = BLACK
