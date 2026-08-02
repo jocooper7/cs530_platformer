@@ -20,12 +20,13 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, UI_FONT_SIZE)
 
-    platforms = load_level_1()
+    platforms, hazards = load_level_1()
     player = Player(100, 100)
 
     all_sprites = pygame.sprite.Group()
     all_sprites.add(player)
     all_sprites.add(platforms)
+    all_sprites.add(hazards)
 
     running = True
     while running:
@@ -39,6 +40,11 @@ def main():
                     player.jump()
 
         player.update(platforms)
+        hazards.update()
+
+        # Hazard collision: apply damage (gated by invincibility window).
+        if pygame.sprite.spritecollide(player, hazards, False):
+            player.take_damage()
 
         screen.fill(SKY_BLUE)
         all_sprites.draw(screen)
