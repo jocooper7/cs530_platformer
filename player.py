@@ -6,6 +6,8 @@ from constants import (
     JUMP_STRENGTH,
     GRAVITY,
     MAX_FALL_SPEED,
+    MAX_LIFE,
+    STARTING_LIFE,
     BLUE,
 )
 
@@ -17,9 +19,17 @@ class Player(pygame.sprite.Sprite):
         self.image.fill(BLUE)
         self.rect = self.image.get_rect(topleft=(x, y))
 
+        # Remember the starting location so the player can be
+        # returned here after running out of life points.
+        self.start_x = x
+        self.start_y = y
+
         self.vel_x = 0
         self.vel_y = 0
         self.on_ground = False
+
+        self.max_life = MAX_LIFE
+        self.life = STARTING_LIFE
 
     def handle_input(self):
         keys = pygame.key.get_pressed()
@@ -38,6 +48,23 @@ class Player(pygame.sprite.Sprite):
         self.vel_y += GRAVITY
         if self.vel_y > MAX_FALL_SPEED:
             self.vel_y = MAX_FALL_SPEED
+
+    def lose_life(self, amount=1):
+        """Reduce the player's life points. If life reaches 0,
+        reset it to the starting value and respawn the player
+        at their starting location."""
+        self.life -= amount
+        if self.life <= 0:
+            self.life = self.max_life
+            self.respawn()
+
+    def respawn(self):
+        """Return the player to their starting location and
+        reset velocity/ground state."""
+        self.rect.topleft = (self.start_x, self.start_y)
+        self.vel_x = 0
+        self.vel_y = 0
+        self.on_ground = False
 
     def update(self, platforms):
         self.handle_input()
