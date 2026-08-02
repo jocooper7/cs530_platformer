@@ -23,8 +23,9 @@ def main():
     platforms, hazards = load_level_1()
     player = Player(100, 100)
 
+    # Player is drawn separately so its visibility can blink during
+    # invincibility; other sprites are drawn via all_sprites as before.
     all_sprites = pygame.sprite.Group()
-    all_sprites.add(player)
     all_sprites.add(platforms)
     all_sprites.add(hazards)
 
@@ -42,12 +43,19 @@ def main():
         player.update(platforms)
         hazards.update()
 
-        # Hazard collision: apply damage (gated by invincibility window).
-        if pygame.sprite.spritecollide(player, hazards, False):
-            player.take_damage()
+        # Hazard collision: apply damage + knockback (gated by
+        # invincibility window).
+        hazard_hits = pygame.sprite.spritecollide(player, hazards, False)
+        if hazard_hits:
+            player.take_damage(hazard_hits[0].rect)
 
         screen.fill(SKY_BLUE)
         all_sprites.draw(screen)
+
+        # Draw the player, skipping alternating frames while
+        # invincible to create a blinking effect.
+        if player.is_visible():
+            screen.blit(player.image, player.rect)
 
         # Render remaining life in the top-left corner.
         life_surface = font.render(
