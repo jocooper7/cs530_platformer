@@ -8,6 +8,7 @@ from constants import (
     MAX_FALL_SPEED,
     MAX_LIFE,
     STARTING_LIFE,
+    INVINCIBILITY_DURATION_MS,
     BLUE,
 )
 
@@ -31,6 +32,10 @@ class Player(pygame.sprite.Sprite):
         self.max_life = MAX_LIFE
         self.life = STARTING_LIFE
 
+        # Timestamp (ms, via pygame.time.get_ticks()) until which the
+        # player is immune to further hazard damage.
+        self.invincible_until = 0
+
     def handle_input(self):
         keys = pygame.key.get_pressed()
         self.vel_x = 0
@@ -48,6 +53,19 @@ class Player(pygame.sprite.Sprite):
         self.vel_y += GRAVITY
         if self.vel_y > MAX_FALL_SPEED:
             self.vel_y = MAX_FALL_SPEED
+
+    def is_invincible(self):
+        return pygame.time.get_ticks() < self.invincible_until
+
+    def take_damage(self, amount=1):
+        """Apply hazard damage, respecting the invincibility window.
+        Returns True if damage was actually applied."""
+        if self.is_invincible():
+            return False
+
+        self.lose_life(amount)
+        self.invincible_until = pygame.time.get_ticks() + INVINCIBILITY_DURATION_MS
+        return True
 
     def lose_life(self, amount=1):
         """Reduce the player's life points. If life reaches 0,
