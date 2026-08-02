@@ -1,5 +1,14 @@
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, TITLE, SKY_BLUE
+from constants import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    FPS,
+    TITLE,
+    SKY_BLUE,
+    UI_FONT_SIZE,
+    UI_MARGIN,
+    UI_TEXT_COLOR,
+)
 from player import Player
 from levels import load_level_1
 
@@ -9,6 +18,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
+    font = pygame.font.Font(None, UI_FONT_SIZE)
 
     platforms = load_level_1()
     player = Player(100, 100)
@@ -32,6 +42,13 @@ def main():
 
         screen.fill(SKY_BLUE)
         all_sprites.draw(screen)
+
+        # Render remaining life in the top-left corner.
+        life_surface = font.render(
+            f"Remaining Life: {player.life}", True, UI_TEXT_COLOR
+        )
+        screen.blit(life_surface, (UI_MARGIN, UI_MARGIN))
+
         pygame.display.flip()
 
     pygame.quit()
