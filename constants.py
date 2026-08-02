@@ -16,6 +16,7 @@ GREEN = (30, 200, 30)
 BLUE = (30, 30, 200)
 YELLOW = (230, 220, 40)
 GRAY = (100, 100, 100)
+BROWN = (101, 67, 33)
 SKY_BLUE = (135, 206, 235)
 
 # ---------------------------
@@ -50,6 +51,12 @@ KNOCKBACK_Y = -8
 # ---------------------------
 PLATFORM_COLOR = GREEN
 GROUND_HEIGHT = 40
+
+# ---------------------------
+# Boundary wall settings
+# ---------------------------
+WALL_WIDTH = 20
+WALL_COLOR = BROWN
 
 # ---------------------------
 # Hazard settings
