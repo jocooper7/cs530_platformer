@@ -35,6 +35,16 @@ MAX_LIFE = 4
 STARTING_LIFE = 4
 INVINCIBILITY_DURATION_MS = 1500
 
+# Slow blink while invincible: player alternates visible/hidden
+# every BLINK_INTERVAL_MS milliseconds.
+BLINK_INTERVAL_MS = 200
+
+# ---------------------------
+# Knockback settings
+# ---------------------------
+KNOCKBACK_X = 6
+KNOCKBACK_Y = -8
+
 # ---------------------------
 # Platform settings
 # ---------------------------
