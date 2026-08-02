@@ -7,6 +7,8 @@ from constants import (
     HAZARD_COLOR,
     HAZARD_SIZE,
     HAZARD_SPEED,
+    CROWN_SIZE,
+    CROWN_COLOR,
 )
 
 
@@ -82,9 +84,20 @@ class Hazard(pygame.sprite.Sprite):
             self.direction = -1
 
 
+class Crown(pygame.sprite.Sprite):
+    """The end-of-level goal. A small yellow square (half the size of
+    the player) representing a crown to be collected."""
+
+    def __init__(self, x, y, size=CROWN_SIZE, color=CROWN_COLOR):
+        super().__init__()
+        self.image = pygame.Surface((size, size))
+        self.image.fill(color)
+        self.rect = self.image.get_rect(topleft=(x, y))
+
+
 def load_level_1():
     """
-    Returns a tuple of (platforms, hazards) sprite groups for level 1.
+    Returns a tuple of (platforms, hazards, crown) for level 1.
     Positions are hardcoded for the proof-of-concept stage.
     """
     platforms = pygame.sprite.Group()
@@ -98,11 +111,17 @@ def load_level_1():
     platform_a = Platform(150, 450, 120, 20)
     platform_b = Platform(350, 350, 120, 20)
     platform_c = Platform(550, 250, 120, 20)
-    platforms.add(platform_a, platform_b, platform_c)
+    platform_d = Platform(700, 200, 100, 20)
+    platforms.add(platform_a, platform_b, platform_c, platform_d)
 
     # Hazards attached to specific platforms
     hazards.add(Hazard(150, 450, 120, 20, facing="up"))
     hazards.add(Hazard(350, 350, 120, 20, facing="down"))
     hazards.add(Hazard(550, 250, 120, 20, facing="up"))
 
-    return platforms, hazards
+    # Goal crown placed on the platform to the right of platform_c
+    crown_x = platform_d.rect.x + (platform_d.rect.width - CROWN_SIZE) // 2
+    crown_y = platform_d.rect.y - CROWN_SIZE
+    crown = Crown(crown_x, crown_y)
+
+    return platforms, hazards, crown
