@@ -9,6 +9,9 @@ from constants import (
     MAX_LIFE,
     STARTING_LIFE,
     INVINCIBILITY_DURATION_MS,
+    BLINK_INTERVAL_MS,
+    KNOCKBACK_X,
+    KNOCKBACK_Y,
     BLUE,
 )
 
@@ -36,6 +39,10 @@ class Player(pygame.sprite.Sprite):
         # player is immune to further hazard damage.
         self.invincible_until = 0
 
+        # Brief knockback impulse applied after taking hazard damage.
+        # While active, this overrides normal horizontal input handling.
+        self.knockback_until = 0
+
     def handle_input(self):
         keys = pygame.key.get_pressed()
         self.vel_x = 0
@@ -57,14 +64,34 @@ class Player(pygame.sprite.Sprite):
     def is_invincible(self):
         return pygame.time.get_ticks() < self.invincible_until
 
-    def take_damage(self, amount=1):
-        """Apply hazard damage, respecting the invincibility window.
+    def is_knocked_back(self):
+        return pygame.time.get_ticks() < self.knockback_until
+
+    def is_visible(self):
+        """Returns False during alternating blink frames while the
+        player is invincible, to visually signal the invincibility
+        window. Always True otherwise."""
+        if not self.is_invincible():
+            return True
+        return (pygame.time.get_ticks() // BLINK_INTERVAL_MS) % 2 == 0
+
+    def take_damage(self, hazard_rect, amount=1):
+        """Apply hazard damage, respecting the invincibility window,
+        and apply a small knockback away from the hazard.
         Returns True if damage was actually applied."""
         if self.is_invincible():
             return False
 
         self.lose_life(amount)
         self.invincible_until = pygame.time.get_ticks() + INVINCIBILITY_DURATION_MS
+
+        # Knock the player horizontally away from the hazard, and
+        # give a small upward pop for a satisfying bounce-back feel.
+        direction = -1 if self.rect.centerx < hazard_rect.centerx else 1
+        self.vel_x = KNOCKBACK_X * direction
+        self.vel_y = KNOCKBACK_Y
+        self.knockback_until = pygame.time.get_ticks() + 200
+
         return True
 
     def lose_life(self, amount=1):
@@ -83,10 +110,16 @@ class Player(pygame.sprite.Sprite):
         self.vel_x = 0
         self.vel_y = 0
         self.on_ground = False
+        self.knockback_until = 0
 
     def update(self, platforms):
-        self.handle_input()
-        self.apply_gravity()
+        if self.is_knocked_back():
+            # Let the knockback impulse play out without overriding
+            # horizontal velocity from normal input this frame.
+            self.apply_gravity()
+        else:
+            self.handle_input()
+            self.apply_gravity()
 
         # Horizontal movement + collision
         self.rect.x += self.vel_x
