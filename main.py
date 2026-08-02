@@ -90,6 +90,9 @@ def main():
                         intro_started_at = now
                     elif event.key == pygame.K_ESCAPE:
                         running = False
+                elif state == STATE_WON:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
 
         if state == STATE_INTRO:
             if now - intro_started_at >= INTRO_MESSAGE_DURATION_MS:
@@ -119,7 +122,6 @@ def main():
         # Drawing
         # ------------------------------------------------------------
         screen.fill(SKY_BLUE)
-        screen.blit(platforms_surface := pygame.Surface((0, 0)), (0, 0))  # no-op placeholder
 
         for platform in platforms:
             screen.blit(platform.image, platform.rect)
@@ -166,6 +168,7 @@ def main():
                     GOOD_JOB_TEXT,
                     f"Level Score: {level_score}",
                     f"Total Score: {total_score}",
+                    EXIT_PROMPT_TEXT,
                 ],
                 UI_TEXT_COLOR,
                 SCREEN_HEIGHT // 2,
