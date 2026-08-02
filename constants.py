@@ -29,7 +29,20 @@ GRAVITY = 0.8
 MAX_FALL_SPEED = 20
 
 # ---------------------------
+# Life / health settings
+# ---------------------------
+MAX_LIFE = 4
+STARTING_LIFE = 4
+
+# ---------------------------
 # Platform settings
 # ---------------------------
 PLATFORM_COLOR = GREEN
 GROUND_HEIGHT = 40
+
+# ---------------------------
+# UI settings
+# ---------------------------
+UI_FONT_SIZE = 28
+UI_MARGIN = 10
+UI_TEXT_COLOR = BLACK
