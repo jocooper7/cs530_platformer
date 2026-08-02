@@ -33,12 +33,20 @@ MAX_FALL_SPEED = 20
 # ---------------------------
 MAX_LIFE = 4
 STARTING_LIFE = 4
+INVINCIBILITY_DURATION_MS = 1500
 
 # ---------------------------
 # Platform settings
 # ---------------------------
 PLATFORM_COLOR = GREEN
 GROUND_HEIGHT = 40
+
+# ---------------------------
+# Hazard settings
+# ---------------------------
+HAZARD_COLOR = GRAY
+HAZARD_SIZE = 24
+HAZARD_SPEED = 2
 
 # ---------------------------
 # UI settings
