@@ -4,7 +4,8 @@ and Principles at Southern New Hampshire University, using only AI prompting.
 
 **Author:** Jo Cooper  
 **Requirements:** Python 3.x, Pygame (`pip install pygame`)
-[**AI Chat Log:**](https://github.com/jocooper7/cs530_platformer/blob/main/platformer-project-setup-log.md)
+
+[**AI Chat Log**](https://github.com/jocooper7/cs530_platformer/blob/main/platformer-project-setup-log.md)
 
 ## Setup
 Run via:
